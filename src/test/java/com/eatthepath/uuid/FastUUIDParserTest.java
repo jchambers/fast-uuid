@@ -20,6 +20,12 @@ public class FastUUIDParserTest {
     }
 
     @Test
+    public void testToString() {
+        final UUID uuid = UUID.randomUUID();
+        assertEquals(uuid.toString(), FastUUIDParser.toString(uuid));
+    }
+
+    @Test
     public void testGetHexValueForChar() {
         assertEquals(0, FastUUIDParser.getHexValueForChar('0'));
         assertEquals(1, FastUUIDParser.getHexValueForChar('1'));

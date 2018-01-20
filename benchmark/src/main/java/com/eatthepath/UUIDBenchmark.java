@@ -45,6 +45,7 @@ public class UUIDBenchmark {
 
     private static final int PREGENERATED_UUID_COUNT = 100_000;
 
+    private UUID[] uuids = new UUID[PREGENERATED_UUID_COUNT];
     private String[] uuidStrings = new String[PREGENERATED_UUID_COUNT];
 
     private int i = 0;
@@ -52,17 +53,30 @@ public class UUIDBenchmark {
     @Setup
     public void setup() {
         for (int i = 0; i < this.uuidStrings.length; i++) {
-            this.uuidStrings[i] = UUID.randomUUID().toString();
+            final UUID uuid = UUID.randomUUID();
+
+            this.uuids[i] = uuid;
+            this.uuidStrings[i] = uuid.toString();
         }
     }
 
     @Benchmark
-    public UUID testUUIDFromString() {
+    public UUID benchmarkUUIDFromString() {
         return UUID.fromString(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
     }
 
     @Benchmark
-    public UUID testUUIDFromFastParser() {
+    public UUID benchmarkUUIDFromFastParser() {
         return FastUUIDParser.parseUUID(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
+    }
+
+    @Benchmark
+    public String benchmarkUUIDToString() {
+        return this.uuids[this.i++ % PREGENERATED_UUID_COUNT].toString();
+    }
+
+    @Benchmark
+    public String benchmarkFastParserToString() {
+        return FastUUIDParser.toString(this.uuids[this.i++ % PREGENERATED_UUID_COUNT]);
     }
 }

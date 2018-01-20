@@ -4,8 +4,13 @@ import java.util.UUID;
 
 public class FastUUIDParser {
 
+    private static final int UUID_STRING_LENGTH = 36;
+
+    private static final char[] HEX_DIGITS =
+            new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+
     public static UUID parseUUID(final String uuidString) {
-        if (uuidString.length() != 36) {
+        if (uuidString.length() != UUID_STRING_LENGTH) {
             throw new IllegalArgumentException("Could not parse UUID string: " + uuidString);
         }
 
@@ -77,6 +82,52 @@ public class FastUUIDParser {
         leastSignificantBits |= getHexValueForChar(uuidString.charAt(35));
         
         return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    public static String toString(final UUID uuid) {
+        final long mostSignificantBits = uuid.getMostSignificantBits();
+        final long leastSignificantBits = uuid.getLeastSignificantBits();
+
+        final char[] uuidChars = new char[UUID_STRING_LENGTH];
+
+        uuidChars[0]  = HEX_DIGITS[(int) ((mostSignificantBits & 0xf000000000000000L) >>> 60)];
+        uuidChars[1]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x0f00000000000000L) >>> 56)];
+        uuidChars[2]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x00f0000000000000L) >>> 52)];
+        uuidChars[3]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x000f000000000000L) >>> 48)];
+        uuidChars[4]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x0000f00000000000L) >>> 44)];
+        uuidChars[5]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x00000f0000000000L) >>> 40)];
+        uuidChars[6]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x000000f000000000L) >>> 36)];
+        uuidChars[7]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x0000000f00000000L) >>> 32)];
+        uuidChars[8]  = '-';
+        uuidChars[9]  = HEX_DIGITS[(int) ((mostSignificantBits & 0x00000000f0000000L) >>> 28)];
+        uuidChars[10] = HEX_DIGITS[(int) ((mostSignificantBits & 0x000000000f000000L) >>> 24)];
+        uuidChars[11] = HEX_DIGITS[(int) ((mostSignificantBits & 0x0000000000f00000L) >>> 20)];
+        uuidChars[12] = HEX_DIGITS[(int) ((mostSignificantBits & 0x00000000000f0000L) >>> 16)];
+        uuidChars[13] = '-';
+        uuidChars[14] = HEX_DIGITS[(int) ((mostSignificantBits & 0x000000000000f000L) >>> 12)];
+        uuidChars[15] = HEX_DIGITS[(int) ((mostSignificantBits & 0x0000000000000f00L) >>> 8)];
+        uuidChars[16] = HEX_DIGITS[(int) ((mostSignificantBits & 0x00000000000000f0L) >>> 4)];
+        uuidChars[17] = HEX_DIGITS[(int)  (mostSignificantBits & 0x000000000000000fL)];
+        uuidChars[18] = '-';
+        uuidChars[19]  = HEX_DIGITS[(int) ((leastSignificantBits & 0xf000000000000000L) >>> 60)];
+        uuidChars[20]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x0f00000000000000L) >>> 56)];
+        uuidChars[21]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x00f0000000000000L) >>> 52)];
+        uuidChars[22]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x000f000000000000L) >>> 48)];
+        uuidChars[23] = '-';
+        uuidChars[24]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x0000f00000000000L) >>> 44)];
+        uuidChars[25]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x00000f0000000000L) >>> 40)];
+        uuidChars[26]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x000000f000000000L) >>> 36)];
+        uuidChars[27]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x0000000f00000000L) >>> 32)];
+        uuidChars[28]  = HEX_DIGITS[(int) ((leastSignificantBits & 0x00000000f0000000L) >>> 28)];
+        uuidChars[29] = HEX_DIGITS[(int) ((leastSignificantBits & 0x000000000f000000L) >>> 24)];
+        uuidChars[30] = HEX_DIGITS[(int) ((leastSignificantBits & 0x0000000000f00000L) >>> 20)];
+        uuidChars[31] = HEX_DIGITS[(int) ((leastSignificantBits & 0x00000000000f0000L) >>> 16)];
+        uuidChars[32] = HEX_DIGITS[(int) ((leastSignificantBits & 0x000000000000f000L) >>> 12)];
+        uuidChars[33] = HEX_DIGITS[(int) ((leastSignificantBits & 0x0000000000000f00L) >>> 8)];
+        uuidChars[34] = HEX_DIGITS[(int) ((leastSignificantBits & 0x00000000000000f0L) >>> 4)];
+        uuidChars[35] = HEX_DIGITS[(int)  (leastSignificantBits & 0x000000000000000fL)];
+
+        return new String(uuidChars);
     }
 
     static int getHexValueForChar(final char c) {

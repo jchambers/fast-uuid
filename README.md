@@ -4,6 +4,8 @@
 
 ## How it works
 
+### Parsing UUIDs
+
 Let's take a look at the OpenJDK implementation of [`UUID#fromString(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html#fromString-java.lang.String-):
 
 ```java
@@ -44,3 +46,38 @@ Here are some benchmark results:
 |------------------------------------|-----------------------------------------|
 | `UUID#fromString(String)`          | 1,633,510.644 ± 10,136.510 UUIDs/second |
 | `FastUUIDParser#parseUUID(String)` | 6,691,400.272 ± 43,419.636 UUIDs/second |
+
+### UUIDs to strings
+
+We've shown that we can significantly improve upon the stock `UUID#fromString(String)` implementation. Can we achieve similar gains in going from a `UUID` to a `String`? Let's take a look at the stock implementation of `UUID#toString()`:
+
+```java
+public String toString() {
+    return (digits(mostSigBits >> 32, 8) + "-" +
+            digits(mostSigBits >> 16, 4) + "-" +
+            digits(mostSigBits, 4) + "-" +
+            digits(leastSigBits >> 48, 4) + "-" +
+            digits(leastSigBits, 12));
+}
+
+private static String digits(long val, int digits) {
+    long hi = 1L << (digits * 4);
+    return Long.toHexString(hi | (val & (hi - 1))).substring(1);
+}
+```
+
+As before, we might notice a few areas of concern:
+
+1. We're performing a lot of string concatenations. Each of those requires allocating space for a new string and ultimately garbage-collecting the intermediate strings. If we can find a way to do less concatenation, we might see some performance gains.
+2. Furthermore, every call to `digits` produces two new strings (via the calls to `toHexString` and `substring`) that ultimately get discarded.
+
+As before, we know some things about UUIDs that help us avoid some general-case error checking and trade some flexibility for performance. For example, we know that the string representation of a UUID will always be exactly 36 characters long (32 hexadecimal digits and four dashes). That means we can pre-allocate space by way of (for example) a [`StringBuilder`](https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html). That alone will save us quite a few string allocations and yield significant performance improvements.
+
+As with UUID parsing, we can go further and write our own "to hexadecimal" method that uses our knowledge about the size and structure of UUID strings to place digits in exactly the right place in the finished string, reducing the need to get substrings and perform concatenations. In the end, this lets us convert UUIDs to strings more than six times faster (and, again, with much less garbage-collection pressure) than the stock implementation.
+
+Some benchmark results:
+
+| Benchmark                       | Throughput                           |
+|---------------------------------|--------------------------------------|
+| `UUID#toString()`               | 3,098,019.503 ± 13,478.983 UUIDs/s   |
+| `FastUUIDParser#toString(UUID)` | 20,992,715.489 ± 113,547.630 UUIDs/s |
