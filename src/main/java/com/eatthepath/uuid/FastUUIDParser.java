@@ -9,30 +9,73 @@ public class FastUUIDParser {
             throw new IllegalArgumentException("Could not parse UUID string: " + uuidString);
         }
 
-        long mostSignificantBits = 0;
+        long mostSignificantBits = getHexValueForChar(uuidString.charAt(0));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(1));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(2));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(3));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(4));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(5));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(6));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(7));
 
-        for (int i = 0; i < 18; i++) {
-            if (i == 8 || i == 13) {
-                // Skip over hyphens
-                continue;
-            }
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(9));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(10));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(11));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(12));
 
-            mostSignificantBits <<= 4;
-            mostSignificantBits |= getHexValueForChar(uuidString.charAt(i));
-        }
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(14));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(15));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(16));
+        mostSignificantBits <<= 4;
+        mostSignificantBits |= getHexValueForChar(uuidString.charAt(17));
 
-        long leastSignificantBits = 0;
+        long leastSignificantBits = getHexValueForChar(uuidString.charAt(19));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(20));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(21));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(22));
 
-        for (int i = 19; i < 36; i++) {
-            if (i == 23) {
-                // Skip over hyphens
-                continue;
-            }
-
-            leastSignificantBits <<= 4;
-            leastSignificantBits |= getHexValueForChar(uuidString.charAt(i));
-        }
-
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(24));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(25));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(26));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(27));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(28));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(29));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(30));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(31));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(32));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(33));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(34));
+        leastSignificantBits <<= 4;
+        leastSignificantBits |= getHexValueForChar(uuidString.charAt(35));
+        
         return new UUID(mostSignificantBits, leastSignificantBits);
     }
 
