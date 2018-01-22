@@ -2,13 +2,37 @@ package com.eatthepath.uuid;
 
 import java.util.UUID;
 
-public class FastUUIDParser {
+/**
+ * <p>A utility class for quickly and efficiently parsing {@link java.util.UUID} instances from strings and writing UUID
+ * instances as strings. The methods contained in this class are optimized for speed and to minimize garbage collection
+ * pressure. In benchmarks, {@link #parseUUID(CharSequence)} is a little more than four times faster than
+ * {@link UUID#fromString(String)}, and {@link #toString(UUID)} is a little more than six times faster than
+ * {@link UUID#toString()}.</p>
+ *
+ * @author <a href="https://github.com/jchambers/">Jon Chambers</a>
+ */
+public class FastUUID {
 
     private static final int UUID_STRING_LENGTH = 36;
 
     private static final char[] HEX_DIGITS =
             new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
 
+    private FastUUID() {
+        // A private constructor prevents callers from accidentally instantiating FastUUID instances
+    }
+
+    /**
+     * Parses a UUID from the given character sequence. The character sequence must represent a UUID as described in
+     * {@link UUID#toString()}.
+     *
+     * @param uuidSequence the character sequence from which to parse a UUID
+     *
+     * @return the UUID represented by the given character sequence
+     *
+     * @throws IllegalArgumentException if the given character sequence does not conform to the string representation as
+     * described in {@link UUID#toString()}
+     */
     public static UUID parseUUID(final CharSequence uuidSequence) {
         if (uuidSequence.length() != UUID_STRING_LENGTH) {
             throw new IllegalArgumentException("Could not parse UUID string: " + uuidSequence);
@@ -80,10 +104,18 @@ public class FastUUIDParser {
         leastSignificantBits |= getHexValueForChar(uuidSequence.charAt(34));
         leastSignificantBits <<= 4;
         leastSignificantBits |= getHexValueForChar(uuidSequence.charAt(35));
-        
+
         return new UUID(mostSignificantBits, leastSignificantBits);
     }
 
+    /**
+     * Returns a string representation of the given UUID. The returned string is formatted as described in
+     * {@link UUID#toString()}.
+     *
+     * @param uuid the UUID to represent as a string
+     *
+     * @return a string representation of the given UUID
+     */
     public static String toString(final UUID uuid) {
         final long mostSignificantBits = uuid.getMostSignificantBits();
         final long leastSignificantBits = uuid.getLeastSignificantBits();

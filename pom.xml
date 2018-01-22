@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.eatthepath</groupId>
-    <artifactId>fast-uuid-parser</artifactId>
+    <artifactId>fast-uuid</artifactId>
     <version>0.1-SNAPSHOT</version>
 
     <dependencies>
