@@ -24,7 +24,7 @@
 
 package com.eatthepath;
 
-import com.eatthepath.uuid.FastUUIDParser;
+import com.eatthepath.uuid.FastUUID;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
@@ -60,7 +60,7 @@ public class UUIDBenchmark {
 
     @Benchmark
     public UUID benchmarkUUIDFromFastParser() {
-        return FastUUIDParser.parseUUID(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
+        return FastUUID.parseUUID(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
     }
 
     @Benchmark
@@ -70,6 +70,6 @@ public class UUIDBenchmark {
 
     @Benchmark
     public String benchmarkFastParserToString() {
-        return FastUUIDParser.toString(this.uuids[this.i++ % PREGENERATED_UUID_COUNT]);
+        return FastUUID.toString(this.uuids[this.i++ % PREGENERATED_UUID_COUNT]);
     }
 }

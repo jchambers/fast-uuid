@@ -59,7 +59,7 @@ THE POSSIBILITY OF SUCH DAMAGE.
         </dependency>
         <dependency>
             <groupId>com.eatthepath</groupId>
-            <artifactId>fast-uuid-parser</artifactId>
+            <artifactId>fast-uuid</artifactId>
             <version>0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
