@@ -30,12 +30,16 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.UUID;
 
 @State(Scope.Thread)
 public class UUIDBenchmark {
 
     private static final int PREGENERATED_UUID_COUNT = 100_000;
+
+    private final Random random = new SecureRandom();
 
     private UUID[] uuids = new UUID[PREGENERATED_UUID_COUNT];
     private String[] uuidStrings = new String[PREGENERATED_UUID_COUNT];
@@ -70,5 +74,25 @@ public class UUIDBenchmark {
     @Benchmark
     public String benchmarkFastParserToString() {
         return FastUUID.toString(this.uuids[this.i++ % PREGENERATED_UUID_COUNT]);
+    }
+
+    @Benchmark
+    public UUID benchmarkUUIDRandomUUID() {
+        return UUID.randomUUID();
+    }
+
+    @Benchmark
+    public UUID benchmarkFastUUIDRandomUUID() {
+        return FastUUID.randomUUID(this.random);
+    }
+
+    @Benchmark
+    public String benchmarkRandomUUIDStringWithIntermediateUUID() {
+        return FastUUID.toString(FastUUID.randomUUID(this.random));
+    }
+
+    @Benchmark
+    public String benchmarkRandomUUIDString() {
+        return FastUUID.randomUUIDString(this.random);
     }
 }
