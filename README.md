@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/jchambers/fast-uuid.svg?branch=master)](https://travis-ci.org/jchambers/fast-uuid)
+
 # FastUUIDParser
 
 `FastUUIDParser` is, as its name implies, a fast UUID parser for Java. It's a little more than four times faster than the stock JDK implementation in benchmarks and produces much less garbage collection pressure. It is intended for applications that spend a lot of time and energy parsing UUIDs.
