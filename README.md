@@ -1,8 +1,8 @@
 [![Build Status](https://travis-ci.org/jchambers/fast-uuid.svg?branch=master)](https://travis-ci.org/jchambers/fast-uuid)
 
-# FastUUIDParser
+# fast-uuid
 
-`FastUUIDParser` is, as its name implies, a fast UUID parser for Java. It's a little more than four times faster than the stock JDK implementation in benchmarks and produces much less garbage collection pressure. It is intended for applications that spend a lot of time and energy parsing UUIDs.
+`fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. In benchmarks, it's a little more than four times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. It is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code.
 
 ## How it works
 
@@ -83,3 +83,7 @@ Some benchmark results:
 |---------------------------------|--------------------------------------|
 | `UUID#toString()`               | 3,098,019.503 ± 13,478.983 UUIDs/s   |
 | `FastUUIDParser#toString(UUID)` | 20,992,715.489 ± 113,547.630 UUIDs/s |
+
+## License
+
+`fast-uuid` is published under the [MIT license](https://github.com/jchambers/fast-uuid/blob/master/LICENSE).
