@@ -98,6 +98,20 @@ Some benchmark results:
 | `UUID#toString()`               | 2,620,931.697 ± 21,127.934 UUIDs/s   |
 | `FastUUIDParser#toString(UUID)` | 17,449,400.607 ± 221,381.917 UUIDs/s |
 
+## Benchmarking
+
+Because `fast-uuid` is a performance-oriented project, it includes [jmh](http://openjdk.java.net/projects/code-tools/jmh/) benchmarks to compare its performance against the stock JDK implementation. To run the the benchmarks:
+
+```bash
+cd fast-uuid
+mvn clean install
+
+cd benchmark
+mvn clean install -U
+
+java -jar target/benchmarks.jar
+```
+
 ## License
 
 `fast-uuid` is published under the [MIT license](https://github.com/jchambers/fast-uuid/blob/master/LICENSE).
