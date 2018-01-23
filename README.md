@@ -4,6 +4,20 @@
 
 `fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. In benchmarks, it's a little more than four times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. It is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code.
 
+## Usage
+
+Using `fast-uuid` is simple. To parse UUIDs:
+
+```java
+UUID uuid = FastUUID.parseUUID(uuidStringOrCharacterSequence);
+```
+
+To convert UUIDs to strings:
+
+```java
+String uuidString = FastUUID.toString(uuid);
+```
+
 ## How it works
 
 ### Parsing UUIDs
