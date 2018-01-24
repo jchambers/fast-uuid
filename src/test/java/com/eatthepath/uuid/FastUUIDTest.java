@@ -67,19 +67,19 @@ public class FastUUIDTest {
         assertEquals(8, FastUUID.getHexValueForChar('8'));
         assertEquals(9, FastUUID.getHexValueForChar('9'));
 
-        assertEquals(10, FastUUID.getHexValueForChar('a'));
-        assertEquals(11, FastUUID.getHexValueForChar('b'));
-        assertEquals(12, FastUUID.getHexValueForChar('c'));
-        assertEquals(13, FastUUID.getHexValueForChar('d'));
-        assertEquals(14, FastUUID.getHexValueForChar('e'));
-        assertEquals(15, FastUUID.getHexValueForChar('f'));
+        assertEquals(0xa, FastUUID.getHexValueForChar('a'));
+        assertEquals(0xb, FastUUID.getHexValueForChar('b'));
+        assertEquals(0xc, FastUUID.getHexValueForChar('c'));
+        assertEquals(0xd, FastUUID.getHexValueForChar('d'));
+        assertEquals(0xe, FastUUID.getHexValueForChar('e'));
+        assertEquals(0xf, FastUUID.getHexValueForChar('f'));
 
-        assertEquals(10, FastUUID.getHexValueForChar('A'));
-        assertEquals(11, FastUUID.getHexValueForChar('B'));
-        assertEquals(12, FastUUID.getHexValueForChar('C'));
-        assertEquals(13, FastUUID.getHexValueForChar('D'));
-        assertEquals(14, FastUUID.getHexValueForChar('E'));
-        assertEquals(15, FastUUID.getHexValueForChar('F'));
+        assertEquals(0xa, FastUUID.getHexValueForChar('A'));
+        assertEquals(0xb, FastUUID.getHexValueForChar('B'));
+        assertEquals(0xc, FastUUID.getHexValueForChar('C'));
+        assertEquals(0xd, FastUUID.getHexValueForChar('D'));
+        assertEquals(0xe, FastUUID.getHexValueForChar('E'));
+        assertEquals(0xf, FastUUID.getHexValueForChar('F'));
     }
 
     @Test(expected = IllegalArgumentException.class)
