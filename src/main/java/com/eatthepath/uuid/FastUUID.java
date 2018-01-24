@@ -24,6 +24,7 @@
 
 package com.eatthepath.uuid;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -173,6 +174,80 @@ public class FastUUID {
         final long mostSignificantBits = uuid.getMostSignificantBits();
         final long leastSignificantBits = uuid.getLeastSignificantBits();
 
+        return toString(mostSignificantBits, leastSignificantBits);
+    }
+
+    public static UUID randomUUID(final Random random) {
+        final byte[] uuidBytes = getRandomUUIDBytes(random);
+
+        final long mostSignificantBits = (uuidBytes[0] & 0xffL) << 56 |
+                (uuidBytes[1] & 0xffL) << 48 |
+                (uuidBytes[2] & 0xffL) << 40 |
+                (uuidBytes[3] & 0xffL) << 32 |
+                (uuidBytes[4] & 0xffL) << 24 |
+                (uuidBytes[5] & 0xffL) << 16 |
+                (uuidBytes[6] & 0xffL) << 8 |
+                (uuidBytes[7] & 0xffL);
+
+        final long leastSignificantBits = (uuidBytes[8] & 0xffL) << 56 |
+                (uuidBytes[9]  & 0xffL) << 48 |
+                (uuidBytes[10] & 0xffL) << 40 |
+                (uuidBytes[11] & 0xffL) << 32 |
+                (uuidBytes[12] & 0xffL) << 24 |
+                (uuidBytes[13] & 0xffL) << 16 |
+                (uuidBytes[14] & 0xffL) << 8 |
+                (uuidBytes[15] & 0xffL);
+
+        return new UUID(mostSignificantBits, leastSignificantBits);
+    }
+
+    /**
+     * Returns a string representation of a type 4 (randomly-generated) UUID.
+     *
+     * @param random the random number source to use to generate a UUID
+     *
+     * @return a string representation of a randomly-generated UUID
+     */
+    public static String randomUUIDString(final Random random) {
+        final byte[] uuidBytes = getRandomUUIDBytes(random);
+
+        final long mostSignificantBits = (uuidBytes[0] & 0xffL) << 56 |
+                (uuidBytes[1] & 0xffL) << 48 |
+                (uuidBytes[2] & 0xffL) << 40 |
+                (uuidBytes[3] & 0xffL) << 32 |
+                (uuidBytes[4] & 0xffL) << 24 |
+                (uuidBytes[5] & 0xffL) << 16 |
+                (uuidBytes[6] & 0xffL) << 8 |
+                (uuidBytes[7] & 0xffL);
+
+        final long leastSignificantBits = (uuidBytes[8] & 0xffL) << 56 |
+                (uuidBytes[9]  & 0xffL) << 48 |
+                (uuidBytes[10] & 0xffL) << 40 |
+                (uuidBytes[11] & 0xffL) << 32 |
+                (uuidBytes[12] & 0xffL) << 24 |
+                (uuidBytes[13] & 0xffL) << 16 |
+                (uuidBytes[14] & 0xffL) << 8 |
+                (uuidBytes[15] & 0xffL);
+
+        return toString(mostSignificantBits, leastSignificantBits);
+    }
+
+    private static byte[] getRandomUUIDBytes(final Random random) {
+        final byte[] uuidBytes = new byte[16];
+        random.nextBytes(uuidBytes);
+
+        // Clear and set the version to 4
+        uuidBytes[6] &= 0x0f;
+        uuidBytes[6] |= 0x40;
+
+        // Clear and set the variant to IETF RFC 4122 (Leach-Salz)
+        uuidBytes[8] &= 0x3f;
+        uuidBytes[8] |= 0x80;
+
+        return uuidBytes;
+    }
+
+    private static String toString(final long mostSignificantBits, final long leastSignificantBits) {
         final char[] uuidChars = new char[UUID_STRING_LENGTH];
 
         uuidChars[0]  = HEX_DIGITS[(int) ((mostSignificantBits & 0xf000000000000000L) >>> 60)];
