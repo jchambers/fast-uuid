@@ -2,7 +2,7 @@
 
 # fast-uuid
 
-`fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. In benchmarks, it's a little more than four times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. It is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code.
+`fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. In benchmarks, it's a little more than thirteen times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. It is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code.
 
 ## Usage
 
@@ -58,10 +58,10 @@ That leaves the first problem: can we find a way to parse a UUID without breakin
 
 Here are some benchmark results:
 
-| Benchmark                          | Throughput                              |
-|------------------------------------|-----------------------------------------|
-| `UUID#fromString(String)`          | 1,633,510.644 ± 10,136.510 UUIDs/second |
-| `FastUUIDParser#parseUUID(String)` | 6,691,400.272 ± 43,419.636 UUIDs/second |
+| Benchmark                          | Throughput                                |
+|------------------------------------|-------------------------------------------|
+| `UUID#fromString(String)`          | 1,402,809.639 ± 47,330.410 UUIDs/second   |
+| `FastUUIDParser#parseUUID(String)` | 18,526,217.851 ± 292,822.631 UUIDs/second |
 
 ### UUIDs to strings
 
@@ -95,8 +95,8 @@ Some benchmark results:
 
 | Benchmark                       | Throughput                           |
 |---------------------------------|--------------------------------------|
-| `UUID#toString()`               | 3,098,019.503 ± 13,478.983 UUIDs/s   |
-| `FastUUIDParser#toString(UUID)` | 20,992,715.489 ± 113,547.630 UUIDs/s |
+| `UUID#toString()`               | 2,620,931.697 ± 21,127.934 UUIDs/s   |
+| `FastUUIDParser#toString(UUID)` | 17,449,400.607 ± 221,381.917 UUIDs/s |
 
 ## License
 
