@@ -37,6 +37,21 @@ import java.util.UUID;
  */
 public class FastUUID {
 
+    private static final boolean USE_JDK_UUID_TO_STRING;
+
+    static {
+        int majorVersion = 0;
+
+        try {
+            majorVersion = Integer.parseInt(System.getProperty("java.specification.version"));
+        } catch (final NumberFormatException ignored) {
+            // This will happen for pretty much anything before Java 9, which had a version scheme like "1.8" instead of
+            // just "8".
+        }
+
+        USE_JDK_UUID_TO_STRING = majorVersion >= 9;
+    }
+
     private static final int UUID_STRING_LENGTH = 36;
 
     private static final char[] HEX_DIGITS =
@@ -149,6 +164,12 @@ public class FastUUID {
      * @return a string representation of the given UUID
      */
     public static String toString(final UUID uuid) {
+        if (USE_JDK_UUID_TO_STRING) {
+            // OpenJDK 9 and newer use a fancy native approach to converting UUIDs to strings and we're better off using
+            // that if it's available.
+            return uuid.toString();
+        }
+
         final long mostSignificantBits = uuid.getMostSignificantBits();
         final long leastSignificantBits = uuid.getLeastSignificantBits();
 
