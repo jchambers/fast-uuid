@@ -91,8 +91,13 @@ public class FastUUID {
      * described in {@link UUID#toString()}
      */
     public static UUID parseUUID(final CharSequence uuidSequence) {
-        if (uuidSequence.length() != UUID_STRING_LENGTH) {
-            throw new IllegalArgumentException("Could not parse UUID string: " + uuidSequence);
+        if (uuidSequence.length() != UUID_STRING_LENGTH ||
+                uuidSequence.charAt(8) != '-' ||
+                uuidSequence.charAt(13) != '-' ||
+                uuidSequence.charAt(18) != '-' ||
+                uuidSequence.charAt(23) != '-') {
+
+            throw new IllegalArgumentException("Illegal UUID string: " + uuidSequence);
         }
 
         long mostSignificantBits = getHexValueForChar(uuidSequence.charAt(0));

@@ -43,6 +43,11 @@ public class FastUUIDTest {
         FastUUID.parseUUID(UUID.randomUUID().toString() + "0");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testParseUUIDNoDashes() {
+        FastUUID.parseUUID("123456789012345678901234567890123456");
+    }
+
     @Test
     public void testToString() {
         final UUID uuid = UUID.randomUUID();
