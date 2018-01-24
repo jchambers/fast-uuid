@@ -2,7 +2,9 @@
 
 # fast-uuid
 
-`fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. In benchmarks, it's a little more than fourteen times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. It is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code.
+`fast-uuid` is a Java library for quickly and efficiently parsing and writing UUIDs. It yields the most dramatic performance gains when compared to Java 8 and older; in benchmarks, it's a little more than fourteen times faster at parsing UUIDs and six times faster at writing UUIDs than the stock JDK implementation. Compared to Java 9 and newer, it's about six times faster when it comes to parsing UUIDs and offers no benefits for writing UUIDs.
+
+This library is intended for applications that work with large quantities of UUIDs or that work with UUIDs in performance-sensitive code, and probably won't be helpful in applications that work with UUIDs infrequently.
 
 ## Usage
 
@@ -56,7 +58,7 @@ It turns out a lot of these issues are interrelated, and we can untangle them to
 
 That leaves the first problem: can we find a way to parse a UUID without breaking it into substrings first? It turns out we can! Here we have to move away from the handy parsing tools that the JDK provides us, though, and write some of our own. We can even go further and, because we know for sure that we're dealing with hexadecimal strings of a fixed length, we can write a parser that drops a lot of error-checking and flexibility and picks up a lot of speed in return. That's exactly what `FastUUIDParser` provides, and the result is that it can parse UUIDs a little more than four times faster than the default JDK implementation and, aside from the finished UUID, doesn't create anything on the heap that will need to get garbage-collected later.
 
-Here are some benchmark results:
+Here are some benchmark results under Java 8:
 
 | Benchmark                          | Throughput                                |
 |------------------------------------|-------------------------------------------|
@@ -91,7 +93,7 @@ As before, we know some things about UUIDs that help us avoid some general-case 
 
 As with UUID parsing, we can go further and write our own "to hexadecimal" method that uses our knowledge about the size and structure of UUID strings to place digits in exactly the right place in the finished string, reducing the need to get substrings and perform concatenations. In the end, this lets us convert UUIDs to strings more than six times faster (and, again, with much less garbage-collection pressure) than the stock implementation.
 
-Some benchmark results:
+Some benchmark results under Java 8:
 
 | Benchmark                       | Throughput                           |
 |---------------------------------|--------------------------------------|
