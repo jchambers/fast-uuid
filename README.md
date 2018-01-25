@@ -24,7 +24,7 @@ String uuidString = FastUUID.toString(uuid);
 
 ### Parsing UUIDs
 
-Let's take a look at the OpenJDK implementation of [`UUID#fromString(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html#fromString-java.lang.String-):
+Let's take a look at the OpenJDK implementation of [`UUID#fromString(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html#fromString-java.lang.String-) for Java 8 and older:
 
 ```java
 public static UUID More ...fromString(String name) {
@@ -65,6 +65,45 @@ Here are some benchmark results under Java 8:
 | `UUID#fromString(String)`          | 1,402,809.639 ± 47,330.410 UUIDs/second   |
 | `FastUUIDParser#parseUUID(String)` | 19,736,169.066 ± 247,028.062 UUIDs/second |
 
+The Java 9 implementation (some comments have been removed in the interest of brevity) improves the situation significantly:
+
+```java
+public static UUID fromString(String name) {
+    int len = name.length();
+    if (len > 36) {
+        throw new IllegalArgumentException("UUID string too large");
+    }
+
+    int dash1 = name.indexOf('-', 0);
+    int dash2 = name.indexOf('-', dash1 + 1);
+    int dash3 = name.indexOf('-', dash2 + 1);
+    int dash4 = name.indexOf('-', dash3 + 1);
+    int dash5 = name.indexOf('-', dash4 + 1);
+
+    if (dash4 < 0 || dash5 >= 0) {
+        throw new IllegalArgumentException("Invalid UUID string: " + name);
+    }
+
+    long mostSigBits = Long.parseLong(name, 0, dash1, 16) & 0xffffffffL;
+    mostSigBits <<= 16;
+    mostSigBits |= Long.parseLong(name, dash1 + 1, dash2, 16) & 0xffffL;
+    mostSigBits <<= 16;
+    mostSigBits |= Long.parseLong(name, dash2 + 1, dash3, 16) & 0xffffL;
+    long leastSigBits = Long.parseLong(name, dash3 + 1, dash4, 16) & 0xffffL;
+    leastSigBits <<= 48;
+    leastSigBits |= Long.parseLong(name, dash4 + 1, len, 16) & 0xffffffffffffL;
+
+    return new UUID(mostSigBits, leastSigBits);
+}
+```
+
+This implementation does away with the string concatenation (and string allocation entirely). The obvious gains are gone, but we might still be able to improve the situation by using a more application-specific parser than `Long#parseLong(String, int, int, int)`. As it turns out, using an application-specific parser makes a surprisingly significant difference. In benchmarks, a specialized parser is about six times faster than the Java 9 implementation of `UUID#fromString(String)`.
+
+| Benchmark                          | Throughput                                |
+|------------------------------------|-------------------------------------------|
+| `UUID#fromString(String)`          | 2,613,730.374 ± 25,277.511 UUIDs/second   |
+| `FastUUIDParser#parseUUID(String)` | 16,796,301.526 ± 191,694.815 UUIDs/second |
+
 ### UUIDs to strings
 
 We've shown that we can significantly improve upon the stock `UUID#fromString(String)` implementation. Can we achieve similar gains in going from a `UUID` to a `String`? Let's take a look at the stock implementation of `UUID#toString()`:
@@ -99,6 +138,8 @@ Some benchmark results under Java 8:
 |---------------------------------|--------------------------------------|
 | `UUID#toString()`               | 2,620,931.697 ± 21,127.934 UUIDs/s   |
 | `FastUUIDParser#toString(UUID)` | 17,449,400.607 ± 221,381.917 UUIDs/s |
+
+Java 9 uses a native method to convert UUIDs to strings, and our optimized implementation is actually a bit slower than the native approach. As a result, we just pass calls to `FastUUIDParser#toString(UUID)` through to `UUID#toString()` under Java 9 and newer.
 
 ## Benchmarking
 
