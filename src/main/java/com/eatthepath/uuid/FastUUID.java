@@ -29,9 +29,11 @@ import java.util.UUID;
 /**
  * <p>A utility class for quickly and efficiently parsing {@link java.util.UUID} instances from strings and writing UUID
  * instances as strings. The methods contained in this class are optimized for speed and to minimize garbage collection
- * pressure. In benchmarks, {@link #parseUUID(CharSequence)} is a little more than four times faster than
+ * pressure. In benchmarks, {@link #parseUUID(CharSequence)} is a little more than 14 times faster than
  * {@link UUID#fromString(String)}, and {@link #toString(UUID)} is a little more than six times faster than
- * {@link UUID#toString()}.</p>
+ * {@link UUID#toString()} when compared to the implementations in Java 8 and older. Under Java 9 and newer,
+ * {@link #parseUUID(CharSequence)} is about six times faster than the JDK implementation and {@link #toString(UUID)}
+ * does not offer any performance enhancements (or regressions!).</p>
  *
  * @author <a href="https://github.com/jchambers/">Jon Chambers</a>
  */
