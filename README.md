@@ -106,7 +106,7 @@ This implementation does away with the string concatenation (and string allocati
 
 ### UUIDs to strings
 
-We've shown that we can significantly improve upon the stock `UUID#fromString(String)` implementation. Can we achieve similar gains in going from a `UUID` to a `String`? Let's take a look at the stock implementation of `UUID#toString()`:
+We've shown that we can significantly improve upon the stock `UUID#fromString(String)` implementation. Can we achieve similar gains in going from a `UUID` to a `String`? Let's take a look at the stock implementation of `UUID#toString()` from Java 8:
 
 ```java
 public String toString() {
