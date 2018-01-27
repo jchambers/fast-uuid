@@ -4,7 +4,7 @@
 
     <groupId>com.eatthepath</groupId>
     <artifactId>fast-uuid</artifactId>
-    <version>0.1</version>
+    <version>0.2-SNAPSHOT</version>
     <name>fast-uuid</name>
     <description>A Java library for quickly and efficiently parsing and writing UUIDs</description>
 
