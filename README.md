@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jchambers/fast-uuid.svg?branch=master)](https://travis-ci.org/jchambers/fast-uuid)
+[![Build Status](https://travis-ci.org/jchambers/fast-uuid.svg?branch=master)](https://travis-ci.org/jchambers/fast-uuid) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.eatthepath/fast-uuid/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.eatthepath/fast-uuid)
 
 # fast-uuid
 
