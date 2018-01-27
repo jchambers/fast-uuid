@@ -20,6 +20,20 @@ To convert UUIDs to strings:
 String uuidString = FastUUID.toString(uuid);
 ```
 
+## Getting fast-uuid
+
+For users of Maven (or Maven-compaitble build tools like Gradle), `fast-uuid` is [available via Maven Central](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.eatthepath%22%20a%3A%22fast-uuid%22). You can add it to your project with the following Maven dependency declaration:
+
+```xml
+<dependency>
+    <groupId>com.eatthepath</groupId>
+    <artifactId>fast-uuid</artifactId>
+    <version>0.1</version>
+</dependency>
+```
+
+For users managing their own dependencies, you can add `fast-uuid` to your project by adding the `fast-uuid` jar file from the [latest release](https://github.com/jchambers/fast-uuid/releases) to your classpath. `fast-uuid` has no additional dependencies.
+
 ## How it works
 
 ### Parsing UUIDs
