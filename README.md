@@ -111,7 +111,7 @@ public static UUID fromString(String name) {
 }
 ```
 
-This implementation does away with the string concatenation (and string allocation entirely). The obvious gains are gone, but we might still be able to improve the situation by using a more application-specific parser than `Long#parseLong(String, int, int, int)`. As it turns out, using an application-specific parser makes a surprisingly significant difference. In benchmarks, a specialized parser is about six times faster than the Java 9 implementation of `UUID#fromString(String)`.
+This implementation does away with the string concatenation (and resulting string allocation) entirely. The obvious gains are gone, but we might still be able to improve the situation by using a more application-specific parser than `Long#parseLong(String, int, int, int)`. As it turns out, using an application-specific parser makes a surprisingly significant difference. In benchmarks, a specialized parser is about six times faster than the Java 9 implementation of `UUID#fromString(String)`.
 
 | Benchmark                          | Throughput                                |
 |------------------------------------|-------------------------------------------|
