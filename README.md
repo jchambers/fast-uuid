@@ -70,14 +70,14 @@ If you're just dealing with UUIDs every now and then, this is just fine. If you'
 
 It turns out a lot of these issues are interrelated, and we can untangle them to get a significant performance boost. By recognizing that we're always dealing with hexadecimal strings, for example, we can immediately resolve the third issue. Once we've done that, we don't need to concatenate strings to prepend `"0x"` to the beginning of each of our substrings. That alone [speeds things up by about 50%](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=JDK-8192784) and cuts the number of string allocations (and presumably garbage collection pressure) in half.
 
-That leaves the first problem: can we find a way to parse a UUID without breaking it into substrings first? It turns out we can! Here we have to move away from the handy parsing tools that the JDK provides us, though, and write some of our own. We can even go further and, because we know for sure that we're dealing with hexadecimal strings of a fixed length, we can write a parser that drops a lot of error-checking and flexibility and picks up a lot of speed in return. That's exactly what `FastUUIDParser` provides, and the result is that it can parse UUIDs a little more than four times faster than the default JDK implementation and, aside from the finished UUID, doesn't create anything on the heap that will need to get garbage-collected later.
+That leaves the first problem: can we find a way to parse a UUID without breaking it into substrings first? It turns out we can! Here we have to move away from the handy parsing tools that the JDK provides us, though, and write some of our own. We can even go further and, because we know for sure that we're dealing with hexadecimal strings of a fixed length, we can write a parser that drops a lot of error-checking and flexibility and picks up a lot of speed in return. That's exactly what `FastUUID` provides, and the result is that it can parse UUIDs a little more than four times faster than the default JDK implementation and, aside from the finished UUID, doesn't create anything on the heap that will need to get garbage-collected later.
 
 Here are some benchmark results under Java 8:
 
 | Benchmark                          | Throughput                                |
 |------------------------------------|-------------------------------------------|
 | `UUID#fromString(String)`          | 1,402,809.639 ± 47,330.410 UUIDs/second   |
-| `FastUUIDParser#parseUUID(String)` | 19,736,169.066 ± 247,028.062 UUIDs/second |
+| `FastUUID#parseUUID(String)`       | 19,736,169.066 ± 247,028.062 UUIDs/second |
 
 The Java 9 implementation (some comments have been removed in the interest of brevity) improves the situation significantly:
 
@@ -116,7 +116,7 @@ This implementation does away with the string concatenation (and string allocati
 | Benchmark                          | Throughput                                |
 |------------------------------------|-------------------------------------------|
 | `UUID#fromString(String)`          | 2,613,730.374 ± 25,277.511 UUIDs/second   |
-| `FastUUIDParser#parseUUID(String)` | 16,796,301.526 ± 191,694.815 UUIDs/second |
+| `FastUUID#parseUUID(String)`       | 16,796,301.526 ± 191,694.815 UUIDs/second |
 
 ### UUIDs to strings
 
@@ -151,9 +151,9 @@ Some benchmark results under Java 8:
 | Benchmark                       | Throughput                           |
 |---------------------------------|--------------------------------------|
 | `UUID#toString()`               | 2,620,931.697 ± 21,127.934 UUIDs/s   |
-| `FastUUIDParser#toString(UUID)` | 17,449,400.607 ± 221,381.917 UUIDs/s |
+| `FastUUID#toString(UUID)`       | 17,449,400.607 ± 221,381.917 UUIDs/s |
 
-Java 9 uses a native method to convert UUIDs to strings, and our optimized implementation is actually a bit slower than the native approach. As a result, we just pass calls to `FastUUIDParser#toString(UUID)` through to `UUID#toString()` under Java 9 and newer.
+Java 9 uses a native method to convert UUIDs to strings, and our optimized implementation is actually a bit slower than the native approach. As a result, we just pass calls to `FastUUID#toString(UUID)` through to `UUID#toString()` under Java 9 and newer.
 
 ## Benchmarking
 
