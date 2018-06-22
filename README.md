@@ -74,10 +74,10 @@ That leaves the first problem: can we find a way to parse a UUID without breakin
 
 Here are some benchmark results under Java 8:
 
-| Benchmark                          | Throughput                  | Margin of error            |
-|------------------------------------|----------------------------:|---------------------------:|
-| `UUID#fromString(String)`          |  1,402,809.639 UUIDs/second |  ± 47,330.410 UUIDs/second |
-| `FastUUID#parseUUID(String)`       | 19,736,169.066 UUIDs/second | ± 247,028.062 UUIDs/second |
+| Benchmark                          | Throughput              | Margin of error        |
+|------------------------------------|------------------------:|-----------------------:|
+| `UUID#fromString(String)`          |  1,402,810 UUIDs/second |  ± 47,330 UUIDs/second |
+| `FastUUID#parseUUID(String)`       | 19,736,169 UUIDs/second | ± 247,028 UUIDs/second |
 
 The Java 9 implementation (some comments have been removed in the interest of brevity) improves the situation significantly:
 
@@ -113,10 +113,10 @@ public static UUID fromString(String name) {
 
 This implementation does away with the string concatenation (and resulting string allocation) entirely. The obvious gains are gone, but we might still be able to improve the situation by using a more application-specific parser than `Long#parseLong(String, int, int, int)`. As it turns out, using an application-specific parser makes a surprisingly significant difference. In benchmarks, a specialized parser is about six times faster than the Java 9 implementation of `UUID#fromString(String)`.
 
-| Benchmark                          | Throughput                  | Margin of error            |
-|------------------------------------|----------------------------:|---------------------------:|
-| `UUID#fromString(String)`          |  2,613,730.374 UUIDs/second |  ± 25,277.511 UUIDs/second |
-| `FastUUID#parseUUID(String)`       | 16,796,301.526 UUIDs/second | ± 191,694.815 UUIDs/second |
+| Benchmark                          | Throughput              | Margin of error        |
+|------------------------------------|------------------------:|-----------------------:|
+| `UUID#fromString(String)`          |  2,613,730 UUIDs/second |  ± 25,278 UUIDs/second |
+| `FastUUID#parseUUID(String)`       | 16,796,302 UUIDs/second | ± 191,695 UUIDs/second |
 
 ### UUIDs to strings
 
@@ -148,10 +148,10 @@ As with UUID parsing, we can go further and write our own "to hexadecimal" metho
 
 Some benchmark results under Java 8:
 
-| Benchmark                       | Throughput                  | Margin of error            |
-|---------------------------------|----------------------------:|---------------------------:|
-| `UUID#toString()`               |  2,620,931.697 UUIDs/second |  ± 21,127.934 UUIDs/second |
-| `FastUUID#toString(UUID)`       | 17,449,400.607 UUIDs/second | ± 221,381.917 UUIDs/second |
+| Benchmark                       | Throughput              | Margin of error        |
+|---------------------------------|------------------------:|-----------------------:|
+| `UUID#toString()`               |  2,620,932 UUIDs/second |  ± 21,128 UUIDs/second |
+| `FastUUID#toString(UUID)`       | 17,449,401 UUIDs/second | ± 221,382 UUIDs/second |
 
 Java 9 uses a native method to convert UUIDs to strings, and our optimized implementation is actually a bit slower than the native approach. As a result, we just pass calls to `FastUUID#toString(UUID)` through to `UUID#toString()` under Java 9 and newer.
 
