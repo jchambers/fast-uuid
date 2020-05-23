@@ -41,7 +41,7 @@ For users managing their own dependencies, you can add `fast-uuid` to your proje
 Let's take a look at the OpenJDK implementation of [`UUID#fromString(String)`](https://docs.oracle.com/javase/8/docs/api/java/util/UUID.html#fromString-java.lang.String-) for Java 8 and older:
 
 ```java
-public static UUID More ...fromString(String name) {
+public static UUID fromString(String name) {
     String[] components = name.split("-");
     if (components.length != 5)
         throw new IllegalArgumentException("Invalid UUID string: "+name);
