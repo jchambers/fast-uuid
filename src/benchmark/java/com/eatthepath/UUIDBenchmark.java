@@ -37,8 +37,8 @@ public class UUIDBenchmark {
 
     private static final int PREGENERATED_UUID_COUNT = 100_000;
 
-    private UUID[] uuids = new UUID[PREGENERATED_UUID_COUNT];
-    private String[] uuidStrings = new String[PREGENERATED_UUID_COUNT];
+    private final UUID[] uuids = new UUID[PREGENERATED_UUID_COUNT];
+    private final String[] uuidStrings = new String[PREGENERATED_UUID_COUNT];
 
     private int i = 0;
 
