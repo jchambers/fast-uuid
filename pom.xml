@@ -5,6 +5,7 @@
     <groupId>com.eatthepath</groupId>
     <artifactId>fast-uuid</artifactId>
     <version>0.2-SNAPSHOT</version>
+    <packaging>bundle</packaging>
     <name>fast-uuid</name>
     <description>A Java library for quickly and efficiently parsing and writing UUIDs</description>
 
@@ -59,6 +60,16 @@
                     <excludes>
                         <exclude>**/.gitignore</exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>4.2.1</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions/>
                 </configuration>
             </plugin>
 
