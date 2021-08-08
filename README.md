@@ -28,7 +28,7 @@ For users of Maven (or Maven-compaitble build tools like Gradle), `fast-uuid` is
 <dependency>
     <groupId>com.eatthepath</groupId>
     <artifactId>fast-uuid</artifactId>
-    <version>0.1</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
