@@ -4,7 +4,7 @@
 
     <groupId>com.eatthepath</groupId>
     <artifactId>fast-uuid</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2.0</version>
     <packaging>bundle</packaging>
 
     <name>fast-uuid</name>
@@ -24,7 +24,8 @@
         <connection>scm:git:https://github.com/jchambers/fast-uuid.git</connection>
         <developerConnection>scm:git:git@github.com:jchambers/fast-uuid.git</developerConnection>
         <url>https://github.com/jchambers/fast-uuid</url>
-    </scm>
+      <tag>fast-uuid-0.2.0</tag>
+  </scm>
 
     <developers>
         <developer>
@@ -85,7 +86,7 @@
                 <version>5.1.2</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <instructions/>
+                    <instructions />
                 </configuration>
             </plugin>
 
