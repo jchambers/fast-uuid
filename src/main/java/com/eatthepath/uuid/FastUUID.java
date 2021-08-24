@@ -92,7 +92,7 @@ public class FastUUID {
     }
 
     private FastUUID() {
-        // A private constructor prevents callers from accidentally instantiating FastUUID instances
+        // A private constructor prevents callers from accidentally instantiating FastUUID objects
     }
 
     /**
