@@ -41,6 +41,7 @@ import java.util.UUID;
 public class FastUUID {
 
     private static final boolean USE_JDK_UUID_TO_STRING;
+    private static final boolean USE_JDK_UUID_FROM_STRING;
 
     static {
         int majorVersion = 0;
@@ -53,6 +54,7 @@ public class FastUUID {
         }
 
         USE_JDK_UUID_TO_STRING = majorVersion >= 9;
+        USE_JDK_UUID_FROM_STRING = majorVersion >= 15;
     }
 
     private static final int UUID_STRING_LENGTH = 36;
@@ -107,11 +109,40 @@ public class FastUUID {
      * described in {@link UUID#toString()}
      */
     public static UUID parseUUID(final CharSequence uuidSequence) {
+        if (USE_JDK_UUID_FROM_STRING && uuidSequence instanceof String) {
+            // OpenJDK 15 and newer use a faster method for parsing UUIDs
+            return UUID.fromString((String) uuidSequence);
+        }
+
+        return parseUUIDInternal(uuidSequence);
+    }
+
+    /**
+     * Parses a UUID from the given string. The string must represent a UUID as described in
+     * {@link UUID#toString()}.
+     *
+     * @param uuidString the string from which to parse a UUID
+     *
+     * @return the UUID represented by the given string
+     *
+     * @throws IllegalArgumentException if the given string does not conform to the string representation as
+     * described in {@link UUID#toString()}
+     */
+    public static UUID parseUUID(final String uuidString) {
+        if (USE_JDK_UUID_FROM_STRING) {
+            // OpenJDK 15 and newer use a faster method for parsing UUIDs
+            return UUID.fromString(uuidString);
+        }
+
+        return parseUUIDInternal(uuidString);
+    }
+
+    private static UUID parseUUIDInternal(CharSequence uuidSequence) {
         if (uuidSequence.length() != UUID_STRING_LENGTH ||
-                uuidSequence.charAt(8) != '-' ||
-                uuidSequence.charAt(13) != '-' ||
-                uuidSequence.charAt(18) != '-' ||
-                uuidSequence.charAt(23) != '-') {
+            uuidSequence.charAt(8) != '-' ||
+            uuidSequence.charAt(13) != '-' ||
+            uuidSequence.charAt(18) != '-' ||
+            uuidSequence.charAt(23) != '-') {
 
             throw new IllegalArgumentException("Illegal UUID string: " + uuidSequence);
         }
