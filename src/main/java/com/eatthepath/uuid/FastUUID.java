@@ -137,12 +137,12 @@ public class FastUUID {
         return parseUUIDInternal(uuidString);
     }
 
-    private static UUID parseUUIDInternal(CharSequence uuidSequence) {
+    private static UUID parseUUIDInternal(final CharSequence uuidSequence) {
         if (uuidSequence.length() != UUID_STRING_LENGTH ||
-            uuidSequence.charAt(8) != '-' ||
-            uuidSequence.charAt(13) != '-' ||
-            uuidSequence.charAt(18) != '-' ||
-            uuidSequence.charAt(23) != '-') {
+                uuidSequence.charAt(8) != '-' ||
+                uuidSequence.charAt(13) != '-' ||
+                uuidSequence.charAt(18) != '-' ||
+                uuidSequence.charAt(23) != '-') {
 
             throw new IllegalArgumentException("Illegal UUID string: " + uuidSequence);
         }
