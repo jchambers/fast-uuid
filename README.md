@@ -118,7 +118,7 @@ This implementation does away with the string concatenation (and resulting strin
 | `UUID#fromString(String)`          |  2,613,730 UUIDs/second |  ± 25,278 UUIDs/second |
 | `FastUUID#parseUUID(String)`       | 16,796,302 UUIDs/second | ± 191,695 UUIDs/second |
 
-Java 15 uses a [much improved method](https://github.com/openjdk/jdk/commit/ebadfaeb2e1cc7b5ce5f101cd8a539bc5478cf5b) to parse UUIDs from strings. As a result, we just pass calls to `FastUUID#fromString(String)` through to `UUID#fromString(String)` under Java 15 and newer.
+Java 15 uses a [much improved method](https://github.com/openjdk/jdk/commit/ebadfaeb2e1cc7b5ce5f101cd8a539bc5478cf5b) to parse UUIDs from strings. As a result, we just pass calls to `FastUUID#parseUUID(String)` through to `UUID#fromString(String)` under Java 15 and newer.
 
 ### UUIDs to strings
 

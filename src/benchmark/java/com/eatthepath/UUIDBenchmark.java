@@ -55,38 +55,27 @@ public class UUIDBenchmark {
 
     @Benchmark
     public UUID benchmarkUUIDFromString() {
-        resetCounterIfNecessary();
         return UUID.fromString(this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 
     @Benchmark
     public UUID benchmarkUUIDFromFastParser() {
-        resetCounterIfNecessary();
         return FastUUID.parseUUID(this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 
     // Checking if type-check to String won't affect performance
     @Benchmark
     public UUID benchmarkUUIDFromCharSequenceFastParser() {
-        resetCounterIfNecessary();
         return FastUUID.parseUUID((CharSequence) this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 
     @Benchmark
     public String benchmarkUUIDToString() {
-        resetCounterIfNecessary();
         return this.uuids[(int) (this.i++ % PREGENERATED_UUID_COUNT)].toString();
     }
 
     @Benchmark
     public String benchmarkFastParserToString() {
-        resetCounterIfNecessary();
         return FastUUID.toString(this.uuids[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
-    }
-
-    private void resetCounterIfNecessary() {
-        if (this.i == Long.MAX_VALUE) {
-            this.i = 0;
-        }
     }
 }
