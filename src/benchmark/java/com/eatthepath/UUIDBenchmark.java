@@ -40,7 +40,8 @@ public class UUIDBenchmark {
     private final UUID[] uuids = new UUID[PREGENERATED_UUID_COUNT];
     private final String[] uuidStrings = new String[PREGENERATED_UUID_COUNT];
 
-    private int i = 0;
+    // Using a long here because on very fast machines the int will overflow
+    private long i = 0;
 
     @Setup
     public void setup() {
@@ -54,21 +55,27 @@ public class UUIDBenchmark {
 
     @Benchmark
     public UUID benchmarkUUIDFromString() {
-        return UUID.fromString(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
+        return UUID.fromString(this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 
     @Benchmark
     public UUID benchmarkUUIDFromFastParser() {
-        return FastUUID.parseUUID(this.uuidStrings[this.i++ % PREGENERATED_UUID_COUNT]);
+        return FastUUID.parseUUID(this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
+    }
+
+    // Checking if type-check to String won't affect performance
+    @Benchmark
+    public UUID benchmarkUUIDFromCharSequenceFastParser() {
+        return FastUUID.parseUUID((CharSequence) this.uuidStrings[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 
     @Benchmark
     public String benchmarkUUIDToString() {
-        return this.uuids[this.i++ % PREGENERATED_UUID_COUNT].toString();
+        return this.uuids[(int) (this.i++ % PREGENERATED_UUID_COUNT)].toString();
     }
 
     @Benchmark
     public String benchmarkFastParserToString() {
-        return FastUUID.toString(this.uuids[this.i++ % PREGENERATED_UUID_COUNT]);
+        return FastUUID.toString(this.uuids[(int) (this.i++ % PREGENERATED_UUID_COUNT)]);
     }
 }
